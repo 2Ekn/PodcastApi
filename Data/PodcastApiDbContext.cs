@@ -9,6 +9,15 @@ public class PodcastApiDbContext : DbContext
     {
 
     }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Episode> Episodes { get; set; }
+    public DbSet<Tag> Tags { get; set; }
+    public DbSet<Guest> Guests { get; set; }
+    public DbSet<Models.Host> Hosts { get; set; }
+    public DbSet<SocialMediaLink> SocialMediaLinks { get; set; }
+    public DbSet<FavoritedEpisode> FavoritedEpisodes { get; set; }
+    public DbSet<Episode2Tag> Episode2Tags { get; set; }
+    public DbSet<Episode2Guest> Episode2Guests { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // EpisodeTag many-to-many configuration
