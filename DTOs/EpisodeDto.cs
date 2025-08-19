@@ -1,4 +1,4 @@
-﻿namespace TfkApi.DTOs;
+﻿namespace PodcastApi.DTOs;
 
 public class EpisodeDto
 {

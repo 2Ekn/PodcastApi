@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TfkApi.Models;
+namespace PodcastApi.Models;
 
 public class Podcast
 {

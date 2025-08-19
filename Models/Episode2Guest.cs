@@ -1,4 +1,4 @@
-﻿namespace TfkApi.Models;
+﻿namespace PodcastApi.Models;
 
 public class Episode2Guest
 {

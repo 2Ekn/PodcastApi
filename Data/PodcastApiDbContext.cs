@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TfkApi.Models;
+using PodcastApi.Models;
 
-namespace TfkApi.Data;
+namespace PodcastApi.Data;
 
 public class PodcastApiDbContext : DbContext
 {
     public PodcastApiDbContext(DbContextOptions<PodcastApiDbContext> options) : base(options)
     {
+
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -42,11 +43,32 @@ public class PodcastApiDbContext : DbContext
         modelBuilder.Entity<SocialMediaLink>()
             .HasOne(s => s.Host)
             .WithMany(h => h.SocialMediaLinks)
-            .HasForeignKey(s => s.HostId);
+            .HasForeignKey(s => s.HostId)
+            .IsRequired(false); // if nullable
 
         modelBuilder.Entity<SocialMediaLink>()
             .HasOne(s => s.Guest)
             .WithMany(g => g.SocialMediaLinks)
-            .HasForeignKey(s => s.GuestId);
+            .HasForeignKey(s => s.GuestId)
+            .IsRequired(false); // if nullable
+
+        modelBuilder.Entity<FavoritedEpisode>()
+            .HasKey(eu => new { eu.EpisodeId, eu.UserId });
+
+        modelBuilder.Entity<FavoritedEpisode>()
+            .HasOne(eu => eu.Episode)
+            .WithMany() // or WithMany(e => e.FavoriteByUsers) if Episode has this property
+            .HasForeignKey(eu => eu.EpisodeId);
+
+        modelBuilder.Entity<FavoritedEpisode>()
+            .HasOne(eu => eu.User)
+            .WithMany(u => u.FavoritedEpisodes)
+            .HasForeignKey(eu => eu.UserId);
+
+        modelBuilder.Entity<FavoritedEpisode>()
+            .HasIndex(fe => fe.UserId);
+
+        modelBuilder.Entity<Episode2Tag>()
+            .HasIndex(et => et.TagId);
     }
 }

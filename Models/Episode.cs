@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TfkApi.Models;
+namespace PodcastApi.Models;
 
 public class Episode
 {
-    public string Id { get; set; } = string.Empty;
+    public int Id { get; set; } 
     [Required]
     [MaxLength(200)]
     public string Title { get; set; } = string.Empty;
@@ -29,7 +29,6 @@ public class Episode
     public Podcast Podcast { get; set; } = new Podcast();
 
     //Navigation for EF
-
     public virtual ICollection<Episode2Guest> EpisodeGuests { get; set; } = new List<Episode2Guest>();
     public virtual ICollection<Episode2Tag> EpisodeTags { get; set; } = new List<Episode2Tag>();
 }
