@@ -3,9 +3,9 @@ using TfkApi.Models;
 
 namespace TfkApi.Data;
 
-public class TfkApiDbContext : DbContext
+public class PodcastApiDbContext : DbContext
 {
-    public TfkApiDbContext(DbContextOptions<TfkApiDbContext> options) : base(options)
+    public PodcastApiDbContext(DbContextOptions<PodcastApiDbContext> options) : base(options)
     {
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,6 @@
 ﻿namespace TfkApi.DTOs;
 
-public class PodcastDTO
+public class PodcastDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
