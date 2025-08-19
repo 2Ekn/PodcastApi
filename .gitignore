@@ -4,11 +4,15 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
+
 *.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+# ASP.NET Core app settings
+appsettings.json
+appsettings.*.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
