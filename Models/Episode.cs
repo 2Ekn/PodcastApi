@@ -30,6 +30,6 @@ public class Episode
 
     //Navigation for EF
 
-    //public virtual ICollection<EpisodeGuest> EpisodeGuests { get; set; } = new List<EpisodeGuest>();
-    //public virtual ICollection<EpisodeTag> EpisodeTags { get; set; } = new List<EpisodeTag>();
+    public virtual ICollection<Episode2Guest> EpisodeGuests { get; set; } = new List<Episode2Guest>();
+    public virtual ICollection<Episode2Tag> EpisodeTags { get; set; } = new List<Episode2Tag>();
 }

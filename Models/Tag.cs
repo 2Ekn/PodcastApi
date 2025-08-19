@@ -13,5 +13,5 @@ public class Tag
     public string? Color { get; set; }
 
     // Navigation
-    //public virtual ICollection<EpisodeTag> EpisodeTags { get; set; } = new List<EpisodeTag>();
+    public virtual ICollection<Episode2Tag> EpisodeTags { get; set; } = new List<Episode2Tag>();
 }

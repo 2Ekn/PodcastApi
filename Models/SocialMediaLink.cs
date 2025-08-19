@@ -2,7 +2,7 @@
 
 namespace TfkApi.Models;
 
-public class SocialMediaLinks
+public class SocialMediaLink
 {
     public int Id { get; set; }
 

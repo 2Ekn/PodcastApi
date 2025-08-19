@@ -13,7 +13,8 @@ public class Guest
     public string Bio { get; set; } = string.Empty;
     public string? PhotoUrl { get; set; } = string.Empty;
 
-    // Navigation
-    //public virtual ICollection<EpisodeGuest> EpisodeGuests { get; set; } = new List<EpisodeGuest>();
-    //public virtual ICollection<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
+    
+
+    public virtual ICollection<Episode2Guest> EpisodeGuests { get; set; } = new List<Episode2Guest>();
+    public virtual ICollection<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
 }
