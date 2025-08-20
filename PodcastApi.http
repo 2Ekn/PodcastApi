@@ -1,6 +1,28 @@
+@PodcastApi_HostAddress = https://localhost:7022
 @TfkApi_HostAddress = http://localhost:5202
 
 GET {{TfkApi_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{PodcastApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "Email": "johannes@hotmail.com",
+  "Password": "password123",
+  "DisplayName": "Johannes"
+}
+
+###
+
+POST {{PodcastApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+   "Email": "johannes@hotmail.com",
+  "Password": "password123"
+}
 
 ###

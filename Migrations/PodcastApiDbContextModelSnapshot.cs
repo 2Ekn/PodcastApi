@@ -22,6 +22,36 @@ namespace PodcastApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PodcastApi.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EpisodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("PodcastApi.Models.Episode", b =>
                 {
                     b.Property<int>("Id")
@@ -48,9 +78,8 @@ namespace PodcastApi.Migrations
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PodcastId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PodcastId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
@@ -86,7 +115,7 @@ namespace PodcastApi.Migrations
 
                     b.HasIndex("GuestId");
 
-                    b.ToTable("Episode2Guests");
+                    b.ToTable("EpisodeGuests");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.Episode2Tag", b =>
@@ -101,7 +130,7 @@ namespace PodcastApi.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("Episode2Tags");
+                    b.ToTable("EpisodeTags");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.FavoritedEpisode", b =>
@@ -119,7 +148,7 @@ namespace PodcastApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoritedEpisodes");
+                    b.ToTable("FavoriteEpisodes");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.Guest", b =>
@@ -175,10 +204,77 @@ namespace PodcastApi.Migrations
                     b.ToTable("Hosts");
                 });
 
+            modelBuilder.Entity("PodcastApi.Models.ListeningHistory", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EpisodeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("LastListenedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProgressSeconds")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "EpisodeId");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.ToTable("ListeningHistories");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Playlist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Playlists");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Playlist2Episode", b =>
+                {
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EpisodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaylistId", "EpisodeId");
+
+                    b.HasIndex("EpisodeId");
+
+                    b.ToTable("PlaylistEpisodes");
+                });
+
             modelBuilder.Entity("PodcastApi.Models.Podcast", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -203,7 +299,25 @@ namespace PodcastApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Podcast");
+                    b.ToTable("Podcasts");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Podcast2Host", b =>
+                {
+                    b.Property<int>("PodcastId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PodcastId", "HostId");
+
+                    b.HasIndex("HostId");
+
+                    b.ToTable("PodcastHosts");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.SocialMediaLink", b =>
@@ -297,6 +411,25 @@ namespace PodcastApi.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PodcastApi.Models.Comment", b =>
+                {
+                    b.HasOne("PodcastApi.Models.Episode", "Episode")
+                        .WithMany("Comments")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PodcastApi.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PodcastApi.Models.Episode", b =>
                 {
                     b.HasOne("PodcastApi.Models.Podcast", "Podcast")
@@ -349,7 +482,7 @@ namespace PodcastApi.Migrations
             modelBuilder.Entity("PodcastApi.Models.FavoritedEpisode", b =>
                 {
                     b.HasOne("PodcastApi.Models.Episode", "Episode")
-                        .WithMany()
+                        .WithMany("FavoriteEpisodes")
                         .HasForeignKey("EpisodeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -365,15 +498,85 @@ namespace PodcastApi.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PodcastApi.Models.ListeningHistory", b =>
+                {
+                    b.HasOne("PodcastApi.Models.Episode", "Episode")
+                        .WithMany("ListeningHistories")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PodcastApi.Models.User", "User")
+                        .WithMany("ListeningHistories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Playlist", b =>
+                {
+                    b.HasOne("PodcastApi.Models.User", "User")
+                        .WithMany("Playlists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Playlist2Episode", b =>
+                {
+                    b.HasOne("PodcastApi.Models.Episode", "Episode")
+                        .WithMany("PlaylistEpisodes")
+                        .HasForeignKey("EpisodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PodcastApi.Models.Playlist", "Playlist")
+                        .WithMany("PlaylistEpisodes")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Episode");
+
+                    b.Navigation("Playlist");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Podcast2Host", b =>
+                {
+                    b.HasOne("PodcastApi.Models.Host", "Host")
+                        .WithMany("PodcastHosts")
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PodcastApi.Models.Podcast", "Podcast")
+                        .WithMany("PodcastHosts")
+                        .HasForeignKey("PodcastId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+
+                    b.Navigation("Podcast");
+                });
+
             modelBuilder.Entity("PodcastApi.Models.SocialMediaLink", b =>
                 {
                     b.HasOne("PodcastApi.Models.Guest", "Guest")
                         .WithMany("SocialMediaLinks")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("PodcastApi.Models.Host", "Host")
                         .WithMany("SocialMediaLinks")
-                        .HasForeignKey("HostId");
+                        .HasForeignKey("HostId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Guest");
 
@@ -382,9 +585,17 @@ namespace PodcastApi.Migrations
 
             modelBuilder.Entity("PodcastApi.Models.Episode", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("EpisodeGuests");
 
                     b.Navigation("EpisodeTags");
+
+                    b.Navigation("FavoriteEpisodes");
+
+                    b.Navigation("ListeningHistories");
+
+                    b.Navigation("PlaylistEpisodes");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.Guest", b =>
@@ -396,12 +607,21 @@ namespace PodcastApi.Migrations
 
             modelBuilder.Entity("PodcastApi.Models.Host", b =>
                 {
+                    b.Navigation("PodcastHosts");
+
                     b.Navigation("SocialMediaLinks");
+                });
+
+            modelBuilder.Entity("PodcastApi.Models.Playlist", b =>
+                {
+                    b.Navigation("PlaylistEpisodes");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.Podcast", b =>
                 {
                     b.Navigation("Episodes");
+
+                    b.Navigation("PodcastHosts");
                 });
 
             modelBuilder.Entity("PodcastApi.Models.Tag", b =>
@@ -411,7 +631,13 @@ namespace PodcastApi.Migrations
 
             modelBuilder.Entity("PodcastApi.Models.User", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("FavoritedEpisodes");
+
+                    b.Navigation("ListeningHistories");
+
+                    b.Navigation("Playlists");
                 });
 #pragma warning restore 612, 618
         }

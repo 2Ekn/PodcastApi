@@ -28,4 +28,7 @@ public class User
 
     // Navigation properties
     public virtual ICollection<FavoritedEpisode> FavoritedEpisodes { get; set; } = new List<FavoritedEpisode>();
+    public ICollection<ListeningHistory> ListeningHistories { get; set; } = new List<ListeningHistory>();
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
 }

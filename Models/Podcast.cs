@@ -4,7 +4,7 @@ namespace PodcastApi.Models;
 
 public class Podcast
 {
-    public string Id { get; set; } = string.Empty;
+    public int Id { get; set; }
     [Required]
     [MaxLength(200)]
     public string Title { get; set; } = string.Empty;
@@ -17,4 +17,6 @@ public class Podcast
     public string LogoUrl { get; set; } = string.Empty;
 
     public List<Episode> Episodes { get; set; } = new List<Episode>();
+    public ICollection<Podcast2Host> PodcastHosts { get; set; } = new List<Podcast2Host>();
+
 }

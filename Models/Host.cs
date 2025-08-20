@@ -17,4 +17,6 @@ public class Host
     //Navigation for EF
 
     public virtual ICollection<SocialMediaLink> SocialMediaLinks { get; set; } = new List<SocialMediaLink>();
+    public ICollection<Podcast2Host> PodcastHosts { get; set; } = new List<Podcast2Host>();
+
 }

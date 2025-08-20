@@ -25,26 +25,26 @@ namespace PodcastApi
 
 
             //Adding authentication and JWT settings
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+            var jwt = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
+
+            builder.Services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
-                    ClockSkew = TimeSpan.Zero // Remove default 5-minute tolerance
-                };
-            });
-            
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = jwt.Issuer,
+                        ValidateAudience = true,
+                        ValidAudience = jwt.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey)),
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
             // Add services to the container.
             builder.Services.AddAuthorization();
             builder.Services.AddControllers();
@@ -52,6 +52,7 @@ namespace PodcastApi
 
             //Registration of created services
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IEpisodeService, EpisodeService>();
 
             var app = builder.Build();
 
