@@ -4,7 +4,7 @@ namespace PodcastApi.Interfaces;
 
 public interface ICommentService
 {
-    Task<IEnumerable<Comment>> GetCommentsByEpisodeIdAsync(int episodeId);
-    Task<Comment> AddCommentAsync(int userId, int episodeId, string content);
-    Task DeleteCommentAsync(int commentId, int userId);
+    Task<IEnumerable<CommentDto>> GetCommentsByEpisodeIdAsync(int episodeId, CancellationToken cancellationToken = default);
+    Task<CommentDto> AddCommentAsync(int userId, AddCommentRequest request, CancellationToken cancellationToken = default);
+    Task DeleteCommentAsync(int commentId, int userId, CancellationToken cancellationToken = default);
 }

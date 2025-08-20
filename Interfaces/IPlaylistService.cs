@@ -1,16 +1,17 @@
-﻿using PodcastApi.Models;
+﻿using PodcastApi.DTOs.Episodes;
+using PodcastApi.Models;
 
 namespace PodcastApi.Interfaces;
 
 public interface IPlaylistService
 {
-    Task<IEnumerable<Playlist>> GetPlaylistsByUserIdAsync(int userId);
-    Task<Playlist?> GetPlaylistByIdAsync(int id);
-    Task<Playlist> CreatePlaylistAsync(int userId, string name);
-    Task RenamePlaylistAsync(int playlistId, string newName);
-    Task DeletePlaylistAsync(int playlistId);
+    Task<IEnumerable<PlaylistDto>> GetPlaylistsByUserIdAsync(int userId, CancellationToken cancellationToken = default);
+    Task<PlaylistDto?> GetPlaylistByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<PlaylistDto> CreatePlaylistAsync(int userId, CreatePlaylistRequest request, CancellationToken cancellationToken = default);
+    Task RenamePlaylistAsync(int playlistId, string newName, CancellationToken cancellationToken = default);
+    Task DeletePlaylistAsync(int playlistId, CancellationToken cancellationToken = default);
 
-    Task AddEpisodeToPlaylistAsync(int playlistId, int episodeId, int position);
-    Task RemoveEpisodeFromPlaylistAsync(int playlistId, int episodeId);
-    Task<IEnumerable<Episode>> GetEpisodesInPlaylistAsync(int playlistId);
+    Task AddEpisodeToPlaylistAsync(int playlistId, int episodeId, int position, CancellationToken cancellationToken = default);
+    Task RemoveEpisodeFromPlaylistAsync(int playlistId, int episodeId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<EpisodeDto>> GetEpisodesInPlaylistAsync(int playlistId, CancellationToken cancellationToken = default);
 }

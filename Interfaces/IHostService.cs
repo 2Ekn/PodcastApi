@@ -2,9 +2,9 @@
 
 public interface IHostService
 {
-    Task<IEnumerable<Host>> GetAllHostsAsync();
-    Task<Host?> GetHostByIdAsync(int id);
-    Task<Host> CreateHostAsync(Host host);
-    Task UpdateHostAsync(Host host);
-    Task DeleteHostAsync(int id);
+    Task<IEnumerable<HostDto>> GetAllHostsAsync(CancellationToken cancellationToken = default);
+    Task<HostDto?> GetHostByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<HostDto> CreateHostAsync(CreateHostRequest request, CancellationToken cancellationToken = default);
+    Task UpdateHostAsync(int id, CreateHostRequest request, CancellationToken cancellationToken = default);
+    Task DeleteHostAsync(int id, CancellationToken cancellationToken = default);
 }

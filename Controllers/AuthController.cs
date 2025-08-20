@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using PodcastApi.Interfaces;
 using System.Security.Claims;
-using PodcastApi.DTOs;
+using PodcastApi.DTOs.Auth;
 
 namespace PodcastApi.Controllers;
 

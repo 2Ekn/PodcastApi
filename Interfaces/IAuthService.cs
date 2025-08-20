@@ -4,6 +4,6 @@ namespace PodcastApi.Interfaces;
 
 public interface IAuthService
 {
-    Task<string> LoginAsync(string email, string password);
-    Task<User> RegisterAsync(string email, string password, string displayName);
+    Task<AuthResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
+    Task<UserDto> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
 }

@@ -4,9 +4,9 @@ namespace PodcastApi.Interfaces;
 
 public interface IGuestService
 {
-    Task<IEnumerable<Guest>> GetAllGuestsAsync();
-    Task<Guest?> GetGuestByIdAsync(int id);
-    Task<Guest> CreateGuestAsync(Guest guest);
-    Task UpdateGuestAsync(Guest guest);
-    Task DeleteGuestAsync(int id);
+    Task<IEnumerable<GuestDto>> GetAllGuestsAsync(CancellationToken cancellationToken = default);
+    Task<GuestDto?> GetGuestByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task<GuestDto> CreateGuestAsync(CreateGuestRequest request, CancellationToken cancellationToken = default);
+    Task UpdateGuestAsync(int id, CreateGuestRequest request, CancellationToken cancellationToken = default);
+    Task DeleteGuestAsync(int id, CancellationToken cancellationToken = default);
 }
