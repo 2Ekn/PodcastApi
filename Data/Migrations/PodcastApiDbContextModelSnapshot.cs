@@ -10,7 +10,7 @@ using PodcastApi.Data;
 
 namespace PodcastApi.Migrations
 {
-    [DbContext(typeof(PodcastApiDbContext))]
+    [DbContext(typeof(PodcastDbContext))]
     partial class PodcastApiDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -39,6 +39,10 @@ namespace PodcastApi.Migrations
 
                     b.Property<int>("EpisodeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserDisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

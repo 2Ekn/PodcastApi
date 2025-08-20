@@ -3,9 +3,9 @@ using PodcastApi.Models;
 
 namespace PodcastApi.Data;
 
-public class PodcastApiDbContext : DbContext
+public class PodcastDbContext : DbContext
 {
-    public PodcastApiDbContext(DbContextOptions<PodcastApiDbContext> options) : base(options)
+    public PodcastDbContext(DbContextOptions<PodcastDbContext> options) : base(options)
     {
 
     }

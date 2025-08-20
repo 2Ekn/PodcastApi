@@ -8,5 +8,6 @@ public sealed class CommentDto
     public int UserId { get; init; }
     public string Content { get; init; } = null!;
     public DateTime CreatedAt { get; init; }
+    public string UserDisplayName { get; set; } = string.Empty;
 }
 

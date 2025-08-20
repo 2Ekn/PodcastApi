@@ -15,10 +15,10 @@ namespace PodcastApi.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly PodcastApiDbContext _context;
+    private readonly PodcastDbContext _context;
     private readonly JwtSettings _jwtSettings;
 
-    public AuthService(PodcastApiDbContext context, IOptions<JwtSettings> jwtSettings)
+    public AuthService(PodcastDbContext context, IOptions<JwtSettings> jwtSettings)
     {
         _context = context;
         _jwtSettings = jwtSettings.Value;

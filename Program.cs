@@ -20,7 +20,7 @@ namespace PodcastApi
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
             //DbContext registration
-            builder.Services.AddDbContext<PodcastApiDbContext>(options =>
+            builder.Services.AddDbContext<PodcastDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

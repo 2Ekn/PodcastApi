@@ -11,9 +11,9 @@ using PodcastApi.Data;
 
 namespace PodcastApi.Migrations
 {
-    [DbContext(typeof(PodcastApiDbContext))]
-    [Migration("20250820080758_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(PodcastDbContext))]
+    [Migration("20250820114846_AddedUserDisplayName")]
+    partial class AddedUserDisplayName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,10 @@ namespace PodcastApi.Migrations
 
                     b.Property<int>("EpisodeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserDisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");

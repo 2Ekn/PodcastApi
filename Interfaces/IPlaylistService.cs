@@ -12,7 +12,7 @@ public interface IPlaylistService
     Task RenamePlaylistAsync(int playlistId, string newName, CancellationToken cancellationToken = default);
     Task DeletePlaylistAsync(int playlistId, CancellationToken cancellationToken = default);
 
-    Task AddEpisodeToPlaylistAsync(int playlistId, int episodeId, int position, CancellationToken cancellationToken = default);
+    Task AddEpisodeToPlaylistAsync(int playlistId, int episodeId, CancellationToken cancellationToken = default);
     Task RemoveEpisodeFromPlaylistAsync(int playlistId, int episodeId, CancellationToken cancellationToken = default);
     Task<IEnumerable<EpisodeDto>> GetEpisodesInPlaylistAsync(int playlistId, CancellationToken cancellationToken = default);
 }
