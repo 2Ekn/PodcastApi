@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PodcastApi.Data;
+using PodcastApi.DTOs.Auth;
+using PodcastApi.DTOs.Users;
 using PodcastApi.Interfaces;
 using PodcastApi.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,18 +24,18 @@ public class AuthService : IAuthService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public async Task<string> LoginAsync(string email, string password)
+    public async Task<AuthResponse> LoginAsync(DTOs.Auth.LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
         {
             throw new ArgumentException("Email and password must be provided");
         }
         // Find the user by email
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == email);
+            .FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
 
         // If user is null or password does not match, throw an exception
-        if (user == null || !VerifyPassword(password, user.Password))
+        if (user == null || !VerifyPassword(loginRequest.Password, user.Password))
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
@@ -41,49 +44,59 @@ public class AuthService : IAuthService
         return GenerateJwtToken(user);
     }
 
-    public async Task<User> RegisterAsync(string email, string password, string displayName)
+    public async Task<UserDto> RegisterAsync(DTOs.Auth.RegisterRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName))
+        if (string.IsNullOrWhiteSpace(registerRequest.Email) ||
+            string.IsNullOrWhiteSpace(registerRequest.Password) ||
+            string.IsNullOrWhiteSpace(registerRequest.DisplayName))
         {
             throw new ArgumentException("Email, password, and display name must be provided");
         }
-        // Check if the user already exists
-        var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == email);
 
-        // If user already exists, throw an exception
+        var normalizedEmail = registerRequest.Email.Trim().ToLowerInvariant();
+
+        // Check if user already exists
+        var existingUser = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email.ToLower() == normalizedEmail, cancellationToken);
+
         if (existingUser != null)
         {
             throw new InvalidOperationException("User already exists");
         }
 
-        //Create a new user
+        // Create and save new user
         var user = new User
         {
-            Email = email,
-            Password = HashPassword(password),
-            DisplayName = displayName
+            Email = normalizedEmail,
+            Password = HashPassword(registerRequest.Password),
+            DisplayName = registerRequest.DisplayName.Trim()
         };
 
         _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
-        return user;
+        // Return DTO, not entity
+        return new UserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            DisplayName = user.DisplayName
+        };
     }
 
-    private string GenerateJwtToken(User user)
+    private AuthResponse GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(
-            [
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.DisplayName),
-            ]),
+            Subject = new ClaimsIdentity(new[]
+            {
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Name, user.DisplayName)
+        }),
             Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes),
             Issuer = _jwtSettings.Issuer,
             Audience = _jwtSettings.Audience,
@@ -91,7 +104,18 @@ public class AuthService : IAuthService
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        var jwt = tokenHandler.WriteToken(token);
+
+        return new AuthResponse
+        {
+            Token = jwt,
+            User = new UserDto
+            {
+                Id = user.Id,
+                Email = user.Email,
+                DisplayName = user.DisplayName
+            }
+        };
     }
 
     private string HashPassword(string password)

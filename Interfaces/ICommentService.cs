@@ -1,4 +1,5 @@
-﻿using PodcastApi.Models;
+﻿using PodcastApi.DTOs.Comments;
+using PodcastApi.Models;
 
 namespace PodcastApi.Interfaces;
 

@@ -1,4 +1,6 @@
-﻿namespace PodcastApi.Interfaces;
+﻿using PodcastApi.DTOs.Hosts;
+
+namespace PodcastApi.Interfaces;
 
 public interface IHostService
 {

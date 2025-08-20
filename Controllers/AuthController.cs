@@ -19,11 +19,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto request)
+    public async Task<IActionResult> Login([FromBody] DTOs.Auth.LoginRequest request)
     {
         try
         {
-            var token = await _authService.LoginAsync(request.Email, request.Password);
+            var token = await _authService.LoginAsync(request);
             return Ok(new { Token = token });
         }
         catch (UnauthorizedAccessException)
@@ -33,11 +33,11 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto request)
+    public async Task<IActionResult> Register([FromBody] DTOs.Auth.RegisterRequest request)
     {
         try
         {
-            var user = await _authService.RegisterAsync(request.Email, request.Password, request.DisplayName);
+            var user = await _authService.RegisterAsync(request);
             return Ok(new { Message = "User registered successfully", UserId = user.Id });
         }
         catch (InvalidOperationException ex)

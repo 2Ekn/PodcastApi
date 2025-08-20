@@ -1,4 +1,5 @@
 ﻿using PodcastApi.DTOs.Episodes;
+using PodcastApi.DTOs.Playlists;
 using PodcastApi.Models;
 
 namespace PodcastApi.Interfaces;

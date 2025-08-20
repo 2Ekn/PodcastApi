@@ -1,4 +1,4 @@
-﻿using PodcastApi.Models;
+﻿using PodcastApi.DTOs.ListeningHistories;
 
 namespace PodcastApi.Interfaces;
 
