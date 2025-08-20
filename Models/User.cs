@@ -24,7 +24,7 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-    public bool IsAdmin { get; set; } = false;
+    public string Role { get; set; } = string.Empty;
 
     // Navigation properties
     public virtual ICollection<FavoritedEpisode> FavoritedEpisodes { get; set; } = new List<FavoritedEpisode>();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PodcastApi.DTOs.Guests;
 using PodcastApi.Interfaces;
 
@@ -6,6 +7,7 @@ namespace PodcastApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public sealed class GuestsController : ControllerBase
 {
     private readonly IGuestService _guestService;
@@ -38,7 +40,7 @@ public sealed class GuestsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, [FromBody] CreateGuestRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateGuestRequest request, CancellationToken cancellationToken)
     {
         try
         {

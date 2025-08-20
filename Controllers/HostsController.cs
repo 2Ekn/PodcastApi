@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PodcastApi.DTOs.Hosts;
 using PodcastApi.Interfaces;
 
@@ -6,6 +7,7 @@ namespace PodcastApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")] 
 public sealed class HostsController : ControllerBase
 {
     private readonly IHostService _hostService;
@@ -16,6 +18,7 @@ public sealed class HostsController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous] // Anyone can browse hosts
     public async Task<ActionResult<IEnumerable<HostDto>>> GetAll(CancellationToken cancellationToken)
     {
         var hosts = await _hostService.GetAllHostsAsync(cancellationToken);
@@ -23,6 +26,7 @@ public sealed class HostsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous] // Anyone can view host details
     public async Task<ActionResult<HostDto>> GetById(int id, CancellationToken cancellationToken)
     {
         var host = await _hostService.GetHostByIdAsync(id, cancellationToken);
@@ -31,6 +35,7 @@ public sealed class HostsController : ControllerBase
     }
 
     [HttpPost]
+
     public async Task<ActionResult<HostDto>> Create([FromBody] CreateHostRequest request, CancellationToken cancellationToken)
     {
         var host = await _hostService.CreateHostAsync(request, cancellationToken);

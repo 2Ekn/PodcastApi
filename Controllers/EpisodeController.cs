@@ -47,7 +47,7 @@ public sealed class EpisodesController : ControllerBase
 
     // POST: api/episodes
     [HttpPost]
-    [Authorize] // restrict to authenticated users, you can later limit to "admins"
+    [Authorize(Roles = "Admin")] // restrict to authenticated users, you can later limit to "admins"
     public async Task<ActionResult<EpisodeDto>> Create([FromBody] CreateEpisodeRequest request, CancellationToken cancellationToken)
     {
         var episode = await _episodeService.CreateAsync(request, cancellationToken);
@@ -56,7 +56,7 @@ public sealed class EpisodesController : ControllerBase
 
     // PUT: api/episodes/5
     [HttpPut("{id:int}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateEpisodeRequest request, CancellationToken cancellationToken)
     {
         try
@@ -73,7 +73,7 @@ public sealed class EpisodesController : ControllerBase
 
     // DELETE: api/episodes/5
     [HttpDelete("{id:int}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
     {
         await _episodeService.DeleteAsync(id, cancellationToken);

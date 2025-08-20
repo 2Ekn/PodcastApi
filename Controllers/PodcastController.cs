@@ -7,6 +7,7 @@ using PodcastApi.Models;
 namespace PodcastApi.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles ="Admin")]
 
 public class PodcastController : ControllerBase
 {
@@ -39,6 +40,7 @@ public class PodcastController : ControllerBase
     }
 
     [HttpPost]
+    
     public async Task<ActionResult<PodcastDto>> Create([FromBody] CreatePodcastRequest request)
     {
       

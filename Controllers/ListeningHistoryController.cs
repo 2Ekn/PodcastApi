@@ -21,7 +21,6 @@ public sealed class ListeningHistoryController : ControllerBase
     private int GetUserId() =>
         int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    // GET: api/listeninghistory
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ListeningHistoryDto>>> GetMyHistory(CancellationToken ct)
     {

@@ -95,7 +95,8 @@ public class AuthService : IAuthService
             {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.DisplayName)
+            new Claim(ClaimTypes.Name, user.DisplayName),
+            new Claim(ClaimTypes.Role, user.Role)
         }),
             Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes),
             Issuer = _jwtSettings.Issuer,

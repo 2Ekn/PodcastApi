@@ -7,7 +7,7 @@ namespace PodcastApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public sealed class TagsController : ControllerBase
 {
     private readonly ITagService _tagService;
