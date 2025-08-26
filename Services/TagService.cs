@@ -45,6 +45,17 @@ public sealed class TagService : ITagService
             })
             .ToListAsync(cancellationToken);
     }
+    public async Task<IEnumerable<TagDto>> GetTagsByEpisodeIdAsync(int episodeId, CancellationToken cancellationToken = default)
+    {
+        return await _context.EpisodeTags
+            .Where(et => et.EpisodeId == episodeId)
+            .Select(et => new TagDto
+            {
+                Id = et.Tag.Id,
+                Name = et.Tag.Name
+            })
+            .ToListAsync(cancellationToken);
+    }
 
     public async Task<TagDto?> GetTagByIdAsync(int id, CancellationToken cancellationToken = default)
     {

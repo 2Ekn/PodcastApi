@@ -17,7 +17,6 @@ public sealed class ListeningHistoryController : ControllerBase
     {
         _listeningHistoryService = listeningHistoryService;
     }
-
     private int GetUserId() =>
         int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -29,7 +28,6 @@ public sealed class ListeningHistoryController : ControllerBase
         return Ok(history);
     }
 
-    // POST: api/listeninghistory/{episodeId}
     [HttpPost("{episodeId:int}")]
     public async Task<IActionResult> UpdateProgress(int episodeId, [FromBody] int progressSeconds, CancellationToken ct)
     {

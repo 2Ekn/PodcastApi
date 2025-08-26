@@ -45,15 +45,4 @@ public class AuthController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
-    [HttpGet("profile")]
-    [Authorize] // This endpoint requires authentication
-    public IActionResult GetProfile()
-    {
-        var userId = User.FindFirst("userId")?.Value;
-        var email = User.FindFirst(ClaimTypes.Email)?.Value;
-        var name = User.FindFirst(ClaimTypes.Name)?.Value;
-
-        return Ok(new { UserId = userId, Email = email, Name = name });
-    }
 }

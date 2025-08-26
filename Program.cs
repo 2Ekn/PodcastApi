@@ -67,16 +67,38 @@ namespace PodcastApi
                     Description = "Enter: Bearer {your token}"
                 };
 
+                // Register definition with the key "Bearer"
                 c.AddSecurityDefinition("Bearer", jwtScheme);
+
+                // Use the key "Bearer" here, not the object
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
                     {
-                        { jwtScheme, Array.Empty<string>() }
-                    });
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    } 
                 });
+            });
 
             //Registration of created services
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<ICommentService, CommentService>();
             builder.Services.AddScoped<IEpisodeService, EpisodeService>();
+            builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+            builder.Services.AddScoped<IGuestService, GuestService>();
+            builder.Services.AddScoped<IHostService, HostService>();
+            builder.Services.AddScoped<IListeningHistoryService, ListeningHistoryService>();
+            builder.Services.AddScoped<IPlaylistService, PlaylistService>();
+            builder.Services.AddScoped<IPodcastService, PodcastService>();
+            builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             var app = builder.Build();
 
@@ -85,7 +107,7 @@ namespace PodcastApi
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();                
+                app.UseSwagger();
                 app.UseSwaggerUI();
             }
 

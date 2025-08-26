@@ -134,7 +134,7 @@ public sealed class EpisodeService : IEpisodeService
     private static void SyncEpisodeTags(Episode e, IEnumerable<int> newTagIds)
     {
         var wanted = new HashSet<int>(newTagIds);
-        e.EpisodeTags.RemoveWhere(et => !wanted.Contains(et.TagId)); // requires ICollection<T> supports RemoveWhere; if not, do ToList()
+        e.EpisodeTags.RemoveWhere(et => !wanted.Contains(et.TagId));
         var existing = e.EpisodeTags.Select(x => x.TagId).ToHashSet();
 
         foreach (var id in wanted.Except(existing))
@@ -156,7 +156,7 @@ public sealed class EpisodeService : IEpisodeService
     }
 }
 
-// Small helpers to use RemoveWhere on ICollection<T> safely
+// Helper to remove items from ICollection safely
 public static class CollectionExtensions
 {
     public static void RemoveWhere<T>(this ICollection<T> source, Func<T, bool> predicate)

@@ -10,4 +10,5 @@ public interface ITagService
     Task<TagDto> CreateTagAsync(CreateTagRequest request, CancellationToken cancellationToken = default);
     Task UpdateTagAsync(int id, CreateTagRequest request, CancellationToken cancellationToken = default);
     Task DeleteTagAsync(int id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<TagDto>> GetTagsByEpisodeIdAsync(int episodeId, CancellationToken cancellationToken = default);
 }

@@ -50,4 +50,11 @@ public sealed class UsersController : ControllerBase
 
         return Ok(user);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAll(CancellationToken ct)
+    {
+        var users = await _userService.GetAllUsersAsync(ct);
+        return Ok(users);
+    }
 }

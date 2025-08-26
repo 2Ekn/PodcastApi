@@ -26,7 +26,7 @@ public sealed class HostsController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [AllowAnonymous] // Anyone can view host details
+    [AllowAnonymous]
     public async Task<ActionResult<HostDto>> GetById(int id, CancellationToken cancellationToken)
     {
         var host = await _hostService.GetHostByIdAsync(id, cancellationToken);

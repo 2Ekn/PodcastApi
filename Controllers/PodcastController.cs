@@ -18,7 +18,7 @@ public class PodcastController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous] // Anyone can browse podcasts
+    [AllowAnonymous]
     public async Task<ActionResult<IEnumerable<PodcastDto>>> GetPodcasts()
     {
         var podcasts = await _podcastService.GetAllPodcastsAsync();
@@ -26,7 +26,7 @@ public class PodcastController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [AllowAnonymous] // Anyone can view podcast details
+    [AllowAnonymous] 
     public async Task<ActionResult<PodcastDto>> GetPodcastById(int id)
     {
         var podcast = await _podcastService.GetPodcastByIdAsync(id);
@@ -40,7 +40,6 @@ public class PodcastController : ControllerBase
     }
 
     [HttpPost]
-    
     public async Task<ActionResult<PodcastDto>> Create([FromBody] CreatePodcastRequest request)
     {
       

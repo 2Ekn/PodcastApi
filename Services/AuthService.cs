@@ -30,6 +30,7 @@ public class AuthService : IAuthService
         {
             throw new ArgumentException("Email and password must be provided");
         }
+
         // Find the user by email
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
@@ -40,7 +41,7 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Invalid credentials");
         }
 
-        // If user is found and password matches, generate JWT token
+        //generate JWT token to found user
         return GenerateJwtToken(user);
     }
 
@@ -119,6 +120,8 @@ public class AuthService : IAuthService
         };
     }
 
+
+    //Helper methods to make it cleaner
     private string HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);

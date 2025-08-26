@@ -17,7 +17,6 @@ public sealed class EpisodesController : ControllerBase
         _episodeService = episodeService;
     }
 
-    // GET: api/episodes?page=1&pageSize=20
     [HttpGet]
     [AllowAnonymous] // anyone can browse episodes
     public async Task<ActionResult<PagedResult<EpisodeDto>>> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 20, CancellationToken cancellationToken = default)
@@ -35,7 +34,6 @@ public sealed class EpisodesController : ControllerBase
         return Ok(result);
     }
 
-    // GET: api/episodes/5
     [HttpGet("{id:int}")]
     [AllowAnonymous]
     public async Task<ActionResult<EpisodeDto>> GetById(int id, CancellationToken cancellationToken)
@@ -45,16 +43,14 @@ public sealed class EpisodesController : ControllerBase
         return Ok(episode);
     }
 
-    // POST: api/episodes
     [HttpPost]
-    [Authorize(Roles = "Admin")] // restrict to authenticated users, you can later limit to "admins"
+    [Authorize(Roles = "Admin")] 
     public async Task<ActionResult<EpisodeDto>> Create([FromBody] CreateEpisodeRequest request, CancellationToken cancellationToken)
     {
         var episode = await _episodeService.CreateAsync(request, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id = episode.Id }, episode);
     }
 
-    // PUT: api/episodes/5
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update(int id, [FromBody] UpdateEpisodeRequest request, CancellationToken cancellationToken)
@@ -71,7 +67,6 @@ public sealed class EpisodesController : ControllerBase
         return NoContent();
     }
 
-    // DELETE: api/episodes/5
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)

@@ -18,7 +18,7 @@ public sealed class FavoritesController : ControllerBase
         _favoriteService = favoriteService;
     }
 
-    // Helper: extract userId from JWT
+    // extracts userId from JWT
     private int GetUserId()
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

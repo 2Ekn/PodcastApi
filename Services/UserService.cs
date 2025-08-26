@@ -46,4 +46,17 @@ public sealed class UserService : IUserService
             DisplayName = user.DisplayName
         };
     }
+
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .AsNoTracking()
+            .Select(u => new UserDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                DisplayName = u.DisplayName
+            })
+            .ToListAsync(cancellationToken);
+    }
 }
