@@ -1,3 +1,11 @@
-﻿namespace PodcastApi.DTOs.Auth;
+﻿using System.Text.Json.Serialization;
 
-public sealed class LoginRequest { public string Email { get; init; } = null!; public string Password { get; init; } = null!; }
+namespace PodcastApi.DTOs.Auth;
+
+public sealed class LoginRequest 
+{
+    [JsonPropertyName("email")]
+    public string Email { get; init; } = null!; 
+    [JsonPropertyName("password")]
+    public string Password { get; init; } = null!; 
+}

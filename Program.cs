@@ -24,6 +24,16 @@ namespace PodcastApi
             builder.Services.AddDbContext<PodcastDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
 
             //Adding authentication and JWT settings
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
@@ -114,8 +124,7 @@ namespace PodcastApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-
+            app.UseCors("AllowAll");
             app.MapControllers();
 
             app.Run();

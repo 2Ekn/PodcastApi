@@ -7,7 +7,7 @@ namespace PodcastApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize] 
+[Authorize]
 public sealed class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -56,5 +56,25 @@ public sealed class UsersController : ControllerBase
     {
         var users = await _userService.GetAllUsersAsync(ct);
         return Ok(users);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<UserDto>> UpdateUser(int id,[FromBody] UpdateUserRequest updateUserRequest, CancellationToken ct)
+    {
+        if (updateUserRequest is null)
+            return BadRequest("Request body is required.");
+        try
+        {
+            var updated = await _userService.UpdateUserAsync(updateUserRequest, id, ct);
+
+            if (updated is null)
+                return NotFound();
+
+            return Ok(updated);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
     }
 }

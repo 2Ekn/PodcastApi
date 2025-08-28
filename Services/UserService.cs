@@ -43,7 +43,9 @@ public sealed class UserService : IUserService
         {
             Id = user.Id,
             Email = user.Email,
-            DisplayName = user.DisplayName
+            DisplayName = user.DisplayName,
+            Role = user.Role,
+            SubLevel = user.SubscriptionLevel
         };
     }
 
@@ -58,5 +60,36 @@ public sealed class UserService : IUserService
                 DisplayName = u.DisplayName
             })
             .ToListAsync(cancellationToken);
+    }
+
+    public async Task<bool> UpdateUserAsync(UpdateUserRequest updateUserRequest, int id, CancellationToken cancellationToken = default)
+    {
+        if(updateUserRequest is null)
+        {
+            throw new ArgumentNullException(nameof(updateUserRequest));
+        }
+
+        var user = await _context.Users
+            .Where(u => u.Id == id)
+            .FirstOrDefaultAsync();
+
+        if(user is null)
+        {
+            throw new KeyNotFoundException("No user was found with that ID.");
+        }
+
+        user.DisplayName = string.IsNullOrWhiteSpace(updateUserRequest.DisplayName) ? user.DisplayName : updateUserRequest.DisplayName;
+        user.Email = string.IsNullOrWhiteSpace(updateUserRequest.Email) ? user.Email : updateUserRequest.Email;
+
+        var emailTaken = await _context.Users
+            .AnyAsync(u => u.Email == updateUserRequest.Email);
+
+        if(emailTaken)
+        {
+            throw new InvalidOperationException("Email already exists.");
+        }
+
+        int rowsAff = await _context.SaveChangesAsync();
+        return rowsAff > 0;
     }
 }
